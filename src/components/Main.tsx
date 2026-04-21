@@ -2,7 +2,7 @@ import MovieInfo from "./MovieInfo";
 
 function Main() {
   return (
-    <main>
+    <main style={{ gridArea: "main" }}>
       <MovieInfo />
     </main>
   );
