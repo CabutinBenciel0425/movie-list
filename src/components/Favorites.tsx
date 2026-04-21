@@ -1,6 +1,9 @@
 function Favorites() {
   return (
-    <aside style={{ gridArea: "sidebar" }}>
+    <aside
+      style={{ gridArea: "sidebar" }}
+      className="border border-border-main"
+    >
       <h1>Favorites</h1>
 
       <ul>

@@ -34,11 +34,16 @@
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr minmax(180px, 1fr);
     grid-template-rows: 100px 1fr;
     grid-template-areas:
       "header header header"
       "main main sidebar";
+  }
+
+  ul {
+    scrollbar-width: thin;
+    scrollbar-color: #d84040 transparent;
   }
 }
 
