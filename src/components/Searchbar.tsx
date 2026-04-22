@@ -10,7 +10,9 @@ function Searchbar() {
           placeholder="Search here..."
         />
         {/* <div className="absolute bg-border-main w-full rounded-2xl px-3 py-2">
-          <ul className="flex flex-col gap-2 overflow-y-auto max-h-40">
+          <ul
+            className="flex flex-col gap-2 overflow-y-auto max-h-40"
+          >
             <li className="border-b border-b-border-secondary">Inception</li>
             <li className="border-b border-b-border-secondary">
               Shutter Island

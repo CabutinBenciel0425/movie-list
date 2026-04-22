@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import type { GetMovieType } from "../sharedTypes/types";
+import { BASE_URL } from "../helpers/constants";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
 
 export function useGetMovie(id: number) {
   const [data, setData] = useState<GetMovieType | null>(null);

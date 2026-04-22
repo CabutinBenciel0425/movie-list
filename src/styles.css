@@ -49,7 +49,9 @@
 
 @theme {
   --color-bg-main: #1d1616;
+  --color-bg-main-hover: #281e1e;
   --color-text-main: #eeeeee;
   --color-border-main: #8e1616;
   --color-border-secondary: #d84040;
+  --color-border-bottom: #311111;
 }
