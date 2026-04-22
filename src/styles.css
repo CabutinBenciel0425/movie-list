@@ -41,7 +41,8 @@
       "main main sidebar";
   }
 
-  ul {
+  ul,
+  main {
     scrollbar-width: thin;
     scrollbar-color: #d84040 transparent;
   }

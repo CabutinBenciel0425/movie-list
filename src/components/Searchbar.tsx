@@ -6,7 +6,7 @@ function Searchbar() {
       <div className="relative">
         <input
           type="text"
-          className="border border-border-main rounded-2xl outline-none px-4 py-2"
+          className="border border-border-main rounded-2xl outline-none px-4 py-2 md:w-60 lg:w-80"
           placeholder="Search here..."
         />
         {/* <div className="absolute bg-border-main w-full rounded-2xl px-3 py-2">
