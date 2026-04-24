@@ -7,7 +7,9 @@ function Favorites() {
       className="border border-border-main"
     >
       <div className="w-full flex items-center justify-start">
-        <h2 className="text-2xl text-gray-600 mx-auto py-5 ">Favorites</h2>
+        <h2 className="text-2xl text-gray-600 mx-auto py-5 lg:text-3xl font-semibold">
+          Favorites
+        </h2>
       </div>
 
       <ul>
