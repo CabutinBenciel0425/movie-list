@@ -1,37 +1,41 @@
-import { useEffect, useState } from "react";
-import type { SearchResultsType } from "../sharedTypes/types";
+import { useState } from "react";
+import type { SearchResponseType } from "../sharedTypes/types";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-export function useSearchMovie(query: string) {
-  const [data, setData] = useState<SearchResultsType | null>(null);
+export function useSearchMovie(
+  setSearchResults?: React.Dispatch<
+    React.SetStateAction<SearchResponseType | null>
+  >,
+) {
+  const [data, setData] = useState<SearchResponseType | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchSearchedMovie = async (query: string) => {
     if (!query.trim()) return;
+    setLoading(true);
+    setError(null);
 
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+    try {
+      const res = await fetch(
+        `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&include_adult=false&language=en-US&page=1`,
+      );
 
-      try {
-        const res = await fetch(
-          `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&include_adult=false&language=en-US&page=1`,
-        );
+      const data = await res.json();
 
-        const data = await res.json();
+      setData(data);
 
-        setData(data);
-      } catch {
-        setError("Failed to fetch movies");
-      } finally {
-        setLoading(false);
+      if (setSearchResults) {
+        setSearchResults(data);
       }
-    };
-    fetchData();
-  }, [query]);
+    } catch {
+      setError("Failed to fetch movies");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { data, loading, error };
+  return { data, loading, error, fetchSearchedMovie };
 }

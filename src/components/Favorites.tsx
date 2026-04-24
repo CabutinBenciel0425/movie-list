@@ -26,7 +26,7 @@ function Favorites() {
           <span className="text-lg font-semibold truncate xl:text-2xl">
             Shutter Island
           </span>
-          <div className="flex flex-row gap-2  items-center">
+          <div className="flex flex-row gap-2 items-center">
             <span>9.1</span>
             <span className="text-lg">
               <FaStar className="text-yellow-400" />

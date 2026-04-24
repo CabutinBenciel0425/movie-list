@@ -1,17 +1,15 @@
-import { useGetMovie } from "../hooks/useGetMovie";
 import { IoChevronBack } from "react-icons/io5";
-import { TbHeartPlus, TbHeartFilled } from "react-icons/tb";
+import { TbHeartFilled } from "react-icons/tb";
+//TbHeartPlus
 import { BASE_IMAGE_URL } from "../helpers/constants";
 import { FaStar } from "react-icons/fa6";
-import { useEffect, useState } from "react";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 function MovieInfo() {
   const [width] = useWindowSize();
 
-  console.log(useGetMovie(27205));
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 py-2 px-4 md:px-8 md:py-6 lg:px-10 lg:py-8 lg:text-2xl">
       <div className="w-full flex items-center justify-start">
         <IoChevronBack className="text-2xl text-border-main hover:text-border-secondary cursor-pointer active:scale-95 lg:text-4xl" />
       </div>
