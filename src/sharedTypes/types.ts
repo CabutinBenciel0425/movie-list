@@ -1,3 +1,23 @@
+import type React from "react";
+
+export type FavoritesActionTypes =
+  | { type: "ADD_FAVORITE"; payload: GetMovieType }
+  | { type: "REMOVE_FAVORITE"; payload: number }
+  | { type: "CLEAR_FAVORITE" };
+
+export type AppContextType = {
+  searchResults: SearchResponseType | null;
+  setSearchResults: React.Dispatch<
+    React.SetStateAction<SearchResponseType | null>
+  >;
+
+  selectedMovie: GetMovieType | null;
+  setSelectedMovie: React.Dispatch<React.SetStateAction<GetMovieType | null>>;
+
+  favorites: GetMovieType[];
+  dispatchFavorites: React.Dispatch<FavoritesActionTypes>;
+};
+
 export type MovieType = {
   adult: boolean;
   backdrop_path: string | null;

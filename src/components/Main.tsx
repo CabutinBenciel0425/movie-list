@@ -1,6 +1,10 @@
+import { useAppContext } from "../hooks/useAppContext";
 import SearchResultsList from "./SearchResultsList";
 
 function Main() {
+  const { favorites } = useAppContext();
+
+  console.log(favorites);
   return (
     <main
       style={{ gridArea: "main" }}
