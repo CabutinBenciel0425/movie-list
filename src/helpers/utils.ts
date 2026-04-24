@@ -1,3 +1,5 @@
+import type { MovieType } from "../sharedTypes/types";
+
 type dateObjTypes = {
   year: string;
   month: string;
@@ -7,6 +9,13 @@ type dateObjTypes = {
 type runtimeObjTypes = {
   hr: number;
   min: number;
+};
+
+export type GetTitlesReturnType = {
+  title: string;
+  year: string;
+  rating: string;
+  id: number;
 };
 
 const months = [
@@ -70,4 +79,13 @@ export function formatRuntime(runtime: number) {
     runtimeObj.min > 1 ? `${runtimeObj.min}mins` : `${runtimeObj.min}min`;
 
   return `${strHour} ${strMinutes}`;
+}
+
+export function getTitles(data: MovieType[]): GetTitlesReturnType[] {
+  return data.map((movie) => ({
+    title: movie.title,
+    year: movie.release_date.split("-")[0],
+    rating: roundOffRating(movie.vote_average),
+    id: movie.id,
+  }));
 }

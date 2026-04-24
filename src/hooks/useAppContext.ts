@@ -8,6 +8,8 @@ export function useAppContext() {
     throw new Error("UseAppContext must be used within AppProvider");
 
   const {
+    view,
+    setView,
     searchResults,
     setSearchResults,
     selectedMovie,
@@ -17,6 +19,8 @@ export function useAppContext() {
   } = context;
 
   return {
+    view,
+    setView,
     searchResults,
     setSearchResults,
     selectedMovie,

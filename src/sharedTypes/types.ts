@@ -1,5 +1,7 @@
 import type React from "react";
 
+export type AppView = "search" | "movie" | "none" | "error";
+
 export type FavoritesActionTypes =
   | { type: "ADD_FAVORITE"; payload: GetMovieType }
   | { type: "REMOVE_FAVORITE"; payload: number }
@@ -13,6 +15,9 @@ export type AppContextType = {
 
   selectedMovie: GetMovieType | null;
   setSelectedMovie: React.Dispatch<React.SetStateAction<GetMovieType | null>>;
+
+  view: AppView;
+  setView: React.Dispatch<React.SetStateAction<AppView>>;
 
   favorites: GetMovieType[];
   dispatchFavorites: React.Dispatch<FavoritesActionTypes>;
