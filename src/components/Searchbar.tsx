@@ -8,7 +8,10 @@ import { getTitles, roundOffRating } from "../helpers/utils";
 function Searchbar() {
   const [inputValue, setInputValue] = useState<string>("");
   const [resultsOpen, setResultsOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
 
   const { setSearchResults, searchResults } = useAppContext();
   const { fetchSearchedMovie, loading, error } =
@@ -18,7 +21,7 @@ function Searchbar() {
     () =>
       debounce((input: string) => {
         fetchSearchedMovie(input);
-        setResultsOpen(true); // open dropdown when searching
+        setResultsOpen(true);
       }, 500),
     [fetchSearchedMovie],
   );
@@ -41,7 +44,25 @@ function Searchbar() {
     debouncedFetch(value);
   }
 
-  // Outside click detection
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "ArrowDown") {
+      setHighlightedIndex((prev) => (prev < titles.length - 1 ? prev + 1 : 0));
+    }
+
+    if (e.key === "ArrowUp") {
+      setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : titles.length - 1));
+    }
+
+    // if (e.keyCode === 13 || e.key === "Enter") {
+    //   setHighlightedIndex((prev) => prev++);
+    // }
+
+    if (e.key === "Escape") {
+      setHighlightedIndex(-1);
+      setResultsOpen(false);
+    }
+  }
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -49,11 +70,26 @@ function Searchbar() {
         !wrapperRef.current.contains(event.target as Node)
       ) {
         setResultsOpen(false);
+        setHighlightedIndex(-1);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (highlightedIndex >= 0) {
+      const el = itemRefs.current[highlightedIndex];
+      el?.scrollIntoView({
+        behavior: "auto",
+        block: "nearest",
+      });
+    }
+  }, [highlightedIndex]);
+
+  useEffect(() => {
+    itemRefs.current = [] as (HTMLLIElement | null)[];
+  }, [titles]);
 
   return (
     <div
@@ -72,6 +108,7 @@ function Searchbar() {
           value={inputValue}
           onChange={handleInputChange}
           onFocus={() => setResultsOpen(true)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
 
         {resultsOpen && (loading || error || titles.length > 0) && (
@@ -92,10 +129,13 @@ function Searchbar() {
               )}
             {!loading && !error && titles.length > 0 && (
               <ul className="flex flex-col overflow-y-auto max-h-60">
-                {titles.map((title) => (
+                {titles.map((title, index) => (
                   <li
                     key={title.id}
-                    className="border-b border-b-border-secondary rounded-md cursor-pointer p-2 flex flex-row justify-between w-full items-center gap-4 hover:bg-border-bottom"
+                    className={`border-b border-b-border-secondary rounded-md cursor-pointer p-2 flex flex-row justify-between w-full items-center gap-4 hover:bg-border-bottom ${highlightedIndex === index ? "bg-border-bottom" : ""}`}
+                    ref={(el) => {
+                      itemRefs.current[index] = el;
+                    }}
                   >
                     <span className="font-semibold w-5/8 text-sm lg:text-md xl:text-lg">
                       {title.title}
