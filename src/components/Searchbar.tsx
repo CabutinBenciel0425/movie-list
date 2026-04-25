@@ -15,6 +15,7 @@ function Searchbar() {
 
   const { setSearchResults, searchResults, setView, setSelectedMovie } =
     useAppContext();
+
   const { fetchSearchedMovie, loading, error } =
     useSearchMovie(setSearchResults);
 
@@ -41,6 +42,7 @@ function Searchbar() {
     if (!value.trim()) {
       debouncedFetch.cancel();
       setSearchResults(null);
+      setView("none");
       setResultsOpen(false);
       return;
     }
@@ -73,12 +75,14 @@ function Searchbar() {
   }
 
   function selectedMovieActions(index: number) {
+    const selected = titles[index];
+
     setHighlightedIndex(index);
-    setInputValue(titles[index].title);
+    setInputValue(selected.title);
     setResultsOpen(false);
     setHighlightedIndex(-1);
     setView("movie");
-    setSelectedMovie(titles[highlightedIndex].id);
+    setSelectedMovie(selected.id);
   }
 
   useEffect(() => {

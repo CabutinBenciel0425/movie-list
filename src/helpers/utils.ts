@@ -6,15 +6,10 @@ type dateObjTypes = {
   day: string;
 };
 
-type runtimeObjTypes = {
-  hr: number;
-  min: number;
-};
-
 export type GetTitlesReturnType = {
   title: string;
   year: string;
-  rating: string;
+  rating: number;
   id: number;
 };
 
@@ -34,7 +29,7 @@ const months = [
 ];
 
 export function roundOffRating(rating: number) {
-  return rating.toFixed(1);
+  return Math.round(rating * 10) / 10;
 }
 
 export function formatReleaseDate(releaseDate: string) {
@@ -64,20 +59,13 @@ export function formatReleaseDate(releaseDate: string) {
 }
 
 export function formatRuntime(runtime: number) {
-  const runtimeObj: runtimeObjTypes = {
-    hr: 0,
-    min: 0,
-  };
-  const hr = runtime / 60;
+  if (!runtime) return "Unspecified";
+
+  const hr = Math.floor(runtime / 60);
   const min = runtime % 60;
 
-  runtimeObj.hr = hr;
-  runtimeObj.min = min;
-
-  const strHour =
-    runtimeObj.hr > 1 ? `${runtimeObj.hr}hrs` : `${runtimeObj.hr}hr`;
-  const strMinutes =
-    runtimeObj.min > 1 ? `${runtimeObj.min}mins` : `${runtimeObj.min}min`;
+  const strHour = hr <= 1 ? `${hr}hr` : `${hr}hrs`;
+  const strMinutes = min <= 1 ? `${min}min` : `${min}mins`;
 
   return `${strHour} ${strMinutes}`;
 }

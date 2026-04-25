@@ -5,8 +5,13 @@ import { BASE_IMAGE_URL } from "../helpers/constants";
 import { useGetGenre } from "../hooks/useGetGenre";
 
 function SearchResultsList() {
-  const { searchResults } = useAppContext();
+  const { searchResults, setView, setSelectedMovie } = useAppContext();
   const { genreMap, fetchGenres } = useGetGenre();
+
+  function handleClickedItem(id: number) {
+    setSelectedMovie(id);
+    setView("movie");
+  }
 
   useEffect(() => {
     console.log(searchResults);
@@ -28,7 +33,10 @@ function SearchResultsList() {
 
       <ul className="flex flex-col gap-2 space-between w-full">
         {searchResults?.results.map((movie) => (
-          <li className="cursor-pointer border-b-3 border-b-border-bottom flex flex-row items-center justify-around gap-4 py-2 hover:bg-bg-main-hover rounded-md h-full transition-all duration-200 ease-in">
+          <li
+            className="cursor-pointer border-b-3 border-b-border-bottom flex flex-row items-center justify-around gap-4 py-2 hover:bg-bg-main-hover rounded-md h-full transition-all duration-200 ease-in"
+            onClick={() => handleClickedItem(movie.id)}
+          >
             <div className="w-2/8">
               <img
                 src={
