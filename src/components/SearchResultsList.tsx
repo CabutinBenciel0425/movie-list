@@ -14,10 +14,6 @@ function SearchResultsList() {
   }
 
   useEffect(() => {
-    console.log(searchResults);
-  }, [searchResults]);
-
-  useEffect(() => {
     if (!searchResults?.results) return;
 
     searchResults.results.forEach((movie) =>

@@ -1,6 +1,15 @@
 import { FaStar } from "react-icons/fa";
+import { useAppContext } from "../hooks/useAppContext";
+import { roundOffRating } from "../helpers/utils";
 
 function Favorites() {
+  const { favorites, setSelectedMovie, setView } = useAppContext();
+
+  function handleClickFavItem(id: number) {
+    setSelectedMovie(id);
+    setView("movie");
+  }
+
   return (
     <aside
       style={{ gridArea: "sidebar" }}
@@ -13,18 +22,28 @@ function Favorites() {
       </div>
 
       <ul>
-        <li className="border-b border-b-border-bottom w-full flex flex-row justify-between px-2 py-4 cursor-pointer hover:bg-bg-main-hover transition-all duration-200 ease-in lg:px-4 xl:px-12 xl:text-2xl">
-          <span className="text-lg font-semibold truncate xl:text-2xl">
-            Inception
-          </span>
-          <div className="flex flex-row gap-2 items-center">
-            <span>8.4</span>
-            <span className="text-lg">
-              <FaStar className="text-yellow-400" />
+        {favorites.length === 0 && (
+          <p className="text-center text-gray-400 py-4">No favorites yet.</p>
+        )}
+
+        {favorites.map((fav) => (
+          <li
+            className="border-b border-b-border-bottom w-full flex flex-row justify-between px-2 py-4 cursor-pointer hover:bg-bg-main-hover transition-all duration-200 ease-in lg:px-4 xl:px-12 xl:text-2xl"
+            onClick={() => handleClickFavItem(fav.id)}
+          >
+            <span className="text-lg font-semibold truncate xl:text-2xl">
+              {fav.title}
             </span>
-          </div>
-        </li>
-        <li className="border-b border-b-border-bottom w-full flex flex-row justify-between px-2 py-4 cursor-pointer hover:bg-bg-main-hover transition-all duration-200 ease-in lg:px-4 xl:px-12 xl:text-2xl">
+            <div className="flex flex-row gap-2 items-center">
+              <span>{roundOffRating(fav.vote_average)}</span>
+              <span className="text-lg">
+                <FaStar className="text-yellow-400" />
+              </span>
+            </div>
+          </li>
+        ))}
+
+        {/* <li className="border-b border-b-border-bottom w-full flex flex-row justify-between px-2 py-4 cursor-pointer hover:bg-bg-main-hover transition-all duration-200 ease-in lg:px-4 xl:px-12 xl:text-2xl">
           <span className="text-lg font-semibold truncate xl:text-2xl">
             Shutter Island
           </span>
@@ -54,7 +73,7 @@ function Favorites() {
               <FaStar className="text-yellow-400" />
             </span>
           </div>
-        </li>
+        </li> */}
       </ul>
     </aside>
   );

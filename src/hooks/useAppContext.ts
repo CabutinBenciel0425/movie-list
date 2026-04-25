@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import type { GetMovieType } from "../sharedTypes/types";
 
 export function useAppContext() {
   const context = useContext(AppContext);
@@ -18,6 +19,26 @@ export function useAppContext() {
     dispatchFavorites,
   } = context;
 
+  function addFavorite(movie: GetMovieType) {
+    dispatchFavorites({
+      type: "ADD_FAVORITE",
+      payload: movie,
+    });
+  }
+
+  function removeFavorite(id: number) {
+    dispatchFavorites({
+      type: "REMOVE_FAVORITE",
+      payload: id,
+    });
+  }
+
+  function clearFavorite() {
+    dispatchFavorites({
+      type: "CLEAR_FAVORITE",
+    });
+  }
+
   return {
     view,
     setView,
@@ -27,5 +48,8 @@ export function useAppContext() {
     setSelectedMovie,
     favorites,
     dispatchFavorites,
+    addFavorite,
+    removeFavorite,
+    clearFavorite,
   };
 }

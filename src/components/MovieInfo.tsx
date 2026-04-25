@@ -1,6 +1,5 @@
 import { IoChevronBack } from "react-icons/io5";
-import { TbHeartFilled } from "react-icons/tb";
-//TbHeartPlus
+import { TbHeartFilled, TbHeartPlus } from "react-icons/tb";
 import { BASE_IMAGE_URL } from "../helpers/constants";
 import { FaStar } from "react-icons/fa6";
 import { useWindowSize } from "../hooks/useWindowSize";
@@ -15,12 +14,32 @@ import {
 
 function MovieInfo() {
   const [width] = useWindowSize();
-  const { selectedMovie, setView, setSelectedMovie } = useAppContext();
+  const {
+    selectedMovie,
+    setView,
+    setSelectedMovie,
+    favorites,
+    addFavorite,
+    removeFavorite,
+  } = useAppContext();
   const { fetchMovie, data } = useGetMovie();
+  const heartIconStyle =
+    "text-4xl text-border-main hover:text-border-secondary cursor-pointer active:scale-97 md:text-5xl lg:text-6xl";
+  const isinFavorites = favorites.some((fav) => fav.id === selectedMovie);
 
   function handleBack() {
     setSelectedMovie(null);
     setView("search");
+  }
+
+  function handleClickHeart() {
+    if (!selectedMovie) return;
+
+    if (isinFavorites) {
+      removeFavorite(selectedMovie);
+    } else if (data) {
+      addFavorite(data);
+    }
   }
 
   useEffect(() => {
@@ -28,14 +47,10 @@ function MovieInfo() {
       fetchMovie(selectedMovie);
     }
   }, [selectedMovie, fetchMovie]);
-  console.log(data);
 
   if (!data) {
     return <p className="text-center mt-10">Loading movie...</p>;
   }
-
-  console.log("selectedMovie:", selectedMovie);
-  console.log("data:", data);
   return (
     <div className="flex flex-col gap-3 py-2 px-4 md:px-8 md:py-6 lg:px-10 lg:py-8 lg:text-2xl">
       <div
@@ -50,15 +65,18 @@ function MovieInfo() {
         </h2>
       </div>
       <div className="w-full flex items-center justify-end">
-        <TbHeartFilled className="text-4xl text-border-main hover:text-border-secondary cursor-pointer active:scale-97 md:text-5xl lg:text-6xl" />
+        {!isinFavorites ? (
+          <TbHeartPlus className={heartIconStyle} onClick={handleClickHeart} />
+        ) : (
+          <TbHeartFilled
+            className={heartIconStyle}
+            onClick={handleClickHeart}
+          />
+        )}
       </div>
       <div className="flex flex-col items-center gap-3 w-full lg:gap-5 xl:flex-row">
         <div className="flex flex-col gap-3 mb-5 xl:flex-row xl:w-2/3">
           <div className="xl:w-1/2">
-            {/* <img
-              src={`${BASE_IMAGE_URL}/${width < 1024 ? "w154" : "w342"}/${data?.poster_path}`}
-              alt=""
-            /> */}
             <img
               src={
                 data?.poster_path
