@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { GetMovieType } from "../sharedTypes/types";
 import { BASE_URL } from "../helpers/constants";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+
+type idType = number | null;
 
 export function useGetMovie() {
   const [data, setData] = useState<GetMovieType | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchMovie(id: number) {
+  const fetchMovie = useCallback(async (id: idType) => {
     if (!id) return;
 
     setLoading(true);
@@ -26,7 +28,7 @@ export function useGetMovie() {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   return { data, loading, error, fetchMovie };
 }

@@ -4,10 +4,21 @@ import { TbHeartFilled } from "react-icons/tb";
 import { BASE_IMAGE_URL } from "../helpers/constants";
 import { FaStar } from "react-icons/fa6";
 import { useWindowSize } from "../hooks/useWindowSize";
+import { useAppContext } from "../hooks/useAppContext";
+import { useEffect } from "react";
+import { useGetMovie } from "../hooks/useGetMovie";
 
 function MovieInfo() {
   const [width] = useWindowSize();
+  const { selectedMovie } = useAppContext();
+  const { fetchMovie, data } = useGetMovie();
 
+  useEffect(() => {
+    if (selectedMovie) {
+      fetchMovie(selectedMovie);
+    }
+  }, [selectedMovie, fetchMovie]);
+  console.log(data);
   return (
     <div className="flex flex-col gap-3 py-2 px-4 md:px-8 md:py-6 lg:px-10 lg:py-8 lg:text-2xl">
       <div className="w-full flex items-center justify-start">

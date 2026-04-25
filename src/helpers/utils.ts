@@ -38,6 +38,7 @@ export function roundOffRating(rating: number) {
 }
 
 export function formatReleaseDate(releaseDate: string) {
+  if (releaseDate.length === 0) return "Not specified";
   const dateObj: dateObjTypes = {
     year: "",
     month: "",

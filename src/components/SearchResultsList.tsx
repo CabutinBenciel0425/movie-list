@@ -1,12 +1,25 @@
 import { useEffect } from "react";
 import { useAppContext } from "../hooks/useAppContext";
+import { formatReleaseDate } from "../helpers/utils";
+import { BASE_IMAGE_URL } from "../helpers/constants";
+import { useGetGenre } from "../hooks/useGetGenre";
 
 function SearchResultsList() {
   const { searchResults } = useAppContext();
+  const { genreMap, fetchGenres } = useGetGenre();
 
   useEffect(() => {
     console.log(searchResults);
   }, [searchResults]);
+
+  useEffect(() => {
+    if (!searchResults?.results) return;
+
+    searchResults.results.forEach((movie) =>
+      fetchGenres(movie.id, movie.genre_ids),
+    );
+  }, [searchResults, fetchGenres]);
+
   return (
     <div className="flex flex-col items-center justify-center px-2 lg:px-4 xl:px-6">
       <h2 className="text-2xl text-gray-600 mx-auto my-3 border-b border-b-border-main w-full py-4 lg:text-3xl font-semibold">
@@ -14,20 +27,33 @@ function SearchResultsList() {
       </h2>
 
       <ul className="flex flex-col gap-2 space-between w-full">
-        <li className="cursor-pointer border-b-3 border-b-border-bottom flex flex-row items-center justify-around gap-4 py-2 hover:bg-bg-main-hover rounded-md h-full transition-all duration-200 ease-in">
-          <div className="w-2/8">
-            <img src="https://placehold.co/92x138" alt="" />
-          </div>
-          <div className="flex flex-col gap-2 w-4/8 px-6">
-            <p className="font-bold text-2xl lg:text-3xl">Inception</p>
-            <p className="text-gray-500">2010</p>
-          </div>
-          <div className="italic text-wrap w-2/8">
-            {/*<span>Loading...</span>*/}
-            {/*<span>Error</span>*/}
-            <span className="text-xl lg:text-2xl">Genres, Genres, Genres</span>
-          </div>
-        </li>
+        {searchResults?.results.map((movie) => (
+          <li className="cursor-pointer border-b-3 border-b-border-bottom flex flex-row items-center justify-around gap-4 py-2 hover:bg-bg-main-hover rounded-md h-full transition-all duration-200 ease-in">
+            <div className="w-2/8">
+              <img
+                src={
+                  movie.poster_path !== null
+                    ? `${BASE_IMAGE_URL}/w92/${movie.poster_path}`
+                    : "https://placehold.co/92x138"
+                }
+                alt={movie.original_title}
+              />
+            </div>
+            <div className="flex flex-col gap-2 w-4/8 px-6">
+              <p className="font-bold text-2xl lg:text-3xl">{movie.title}</p>
+              <p className="text-gray-500">
+                {formatReleaseDate(movie.release_date)}
+              </p>
+            </div>
+            <div className="italic text-wrap w-2/8">
+              {/*<span>Loading...</span>*/}
+              {/*<span>Error</span>*/}
+              <span className="text-xl lg:text-2xl">
+                {genreMap[movie.id]?.join(", ") || "Not specified"}
+              </span>
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );
