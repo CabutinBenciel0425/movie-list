@@ -1,9 +1,5 @@
 import { useReducer, useState } from "react";
-import type {
-  AppView,
-  GetMovieType,
-  SearchResponseType,
-} from "../sharedTypes/types";
+import type { AppView, SearchResponseType } from "../sharedTypes/types";
 import { favoritesReducer } from "../reducer/AppReducer";
 import { AppContext } from "./AppContext";
 
@@ -12,7 +8,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     null,
   );
   const [view, setView] = useState<AppView>("none");
-  const [selectedMovie, setSelectedMovie] = useState<GetMovieType | null>(null);
+  const [selectedMovie, setSelectedMovie] = useState<number | null>(null);
   const [favorites, dispatchFavorites] = useReducer(favoritesReducer, []);
 
   return (

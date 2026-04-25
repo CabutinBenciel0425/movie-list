@@ -1,4 +1,12 @@
+import { useEffect } from "react";
+import { useAppContext } from "../hooks/useAppContext";
+
 function SearchResultsList() {
+  const { searchResults } = useAppContext();
+
+  useEffect(() => {
+    console.log(searchResults);
+  }, [searchResults]);
   return (
     <div className="flex flex-col items-center justify-center px-2 lg:px-4 xl:px-6">
       <h2 className="text-2xl text-gray-600 mx-auto my-3 border-b border-b-border-main w-full py-4 lg:text-3xl font-semibold">

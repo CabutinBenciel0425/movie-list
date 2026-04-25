@@ -13,7 +13,8 @@ function Searchbar() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
 
-  const { setSearchResults, searchResults } = useAppContext();
+  const { setSearchResults, searchResults, setView, setSelectedMovie } =
+    useAppContext();
   const { fetchSearchedMovie, loading, error } =
     useSearchMovie(setSearchResults);
 
@@ -22,6 +23,7 @@ function Searchbar() {
       debounce((input: string) => {
         fetchSearchedMovie(input);
         setResultsOpen(true);
+        setHighlightedIndex(-1);
       }, 500),
     [fetchSearchedMovie],
   );
@@ -34,6 +36,7 @@ function Searchbar() {
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setInputValue(value);
+    setHighlightedIndex(-1);
 
     if (!value.trim()) {
       debouncedFetch.cancel();
@@ -53,14 +56,29 @@ function Searchbar() {
       setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : titles.length - 1));
     }
 
-    // if (e.keyCode === 13 || e.key === "Enter") {
-    //   setHighlightedIndex((prev) => prev++);
-    // }
+    if (e.key === "Enter") {
+      if (highlightedIndex === -1) {
+        setResultsOpen(false);
+        setHighlightedIndex(-1);
+        setView("search");
+      } else if (highlightedIndex >= 0) {
+        selectedMovieActions(highlightedIndex);
+      }
+    }
 
     if (e.key === "Escape") {
       setHighlightedIndex(-1);
       setResultsOpen(false);
     }
+  }
+
+  function selectedMovieActions(index: number) {
+    setHighlightedIndex(index);
+    setInputValue(titles[index].title);
+    setResultsOpen(false);
+    setHighlightedIndex(-1);
+    setView("movie");
+    setSelectedMovie(titles[highlightedIndex].id);
   }
 
   useEffect(() => {
@@ -105,13 +123,17 @@ function Searchbar() {
               focus:ring-2 focus:ring-border-secondary"
           placeholder="Search here..."
           spellCheck="false"
-          value={inputValue}
+          value={
+            highlightedIndex === -1
+              ? inputValue
+              : titles[highlightedIndex].title
+          }
           onChange={handleInputChange}
           onFocus={() => setResultsOpen(true)}
           onKeyDown={(e) => handleKeyDown(e)}
         />
 
-        {resultsOpen && (loading || error || titles.length > 0) && (
+        {resultsOpen && inputValue.trim().length > 0 && (
           <div className="absolute bg-border-main w-full rounded-2xl px-3 py-2">
             {loading && (
               <p className="text-sm text-gray-400 p-2">Searching...</p>
@@ -132,10 +154,11 @@ function Searchbar() {
                 {titles.map((title, index) => (
                   <li
                     key={title.id}
-                    className={`border-b border-b-border-secondary rounded-md cursor-pointer p-2 flex flex-row justify-between w-full items-center gap-4 hover:bg-border-bottom ${highlightedIndex === index ? "bg-border-bottom" : ""}`}
+                    className={`border-b border-b-border-secondary rounded-md cursor-pointer p-2 flex flex-row justify-between w-full items-center gap-4 hover:bg-border-bottom active:bg-border-bottom ${highlightedIndex === index ? "bg-border-bottom" : ""}`}
                     ref={(el) => {
                       itemRefs.current[index] = el;
                     }}
+                    onMouseDown={() => selectedMovieActions(index)}
                   >
                     <span className="font-semibold w-5/8 text-sm lg:text-md xl:text-lg">
                       {title.title}

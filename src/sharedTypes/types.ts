@@ -13,8 +13,8 @@ export type AppContextType = {
     React.SetStateAction<SearchResponseType | null>
   >;
 
-  selectedMovie: GetMovieType | null;
-  setSelectedMovie: React.Dispatch<React.SetStateAction<GetMovieType | null>>;
+  selectedMovie: number | null;
+  setSelectedMovie: React.Dispatch<React.SetStateAction<number | null>>;
 
   view: AppView;
   setView: React.Dispatch<React.SetStateAction<AppView>>;
