@@ -75,7 +75,7 @@ function MovieInfo() {
         )}
       </div>
       <div className="flex flex-col items-center gap-3 w-full lg:gap-5 xl:flex-row">
-        <div className="flex flex-col gap-3 mb-5 xl:flex-row xl:w-2/3">
+        <div className="flex flex-col gap-3 mb-5 xl:flex-row xl:w-2/3 items-center">
           <div className="xl:w-1/2">
             <img
               src={
