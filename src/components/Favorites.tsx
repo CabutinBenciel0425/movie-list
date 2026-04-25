@@ -3,18 +3,41 @@ import { useAppContext } from "../hooks/useAppContext";
 import { roundOffRating } from "../helpers/utils";
 
 function Favorites() {
-  const { favorites, setSelectedMovie, setView } = useAppContext();
+  const {
+    favorites,
+    setSelectedMovie,
+    setView,
+    openConfirmModal,
+    clearFavorite,
+  } = useAppContext();
 
   function handleClickFavItem(id: number) {
     setSelectedMovie(id);
     setView("movie");
   }
 
+  function handleClearFavorites() {
+    openConfirmModal({
+      title: "Clear Favorites",
+      message: "Are you sure you want to remove all favorites?",
+      confirmText: "Clear",
+      onConfirm: clearFavorite,
+    });
+  }
+
   return (
     <aside
       style={{ gridArea: "sidebar" }}
-      className="border border-border-main"
+      className="border border-border-main relative"
     >
+      {favorites.length > 0 && (
+        <button
+          className="absolute top-4.5 right-5 border border-border-main px-2 py-1 rounded-md active:scale-96 duration-200 transition-all ease-in cursor-pointer text-gray-300 font-semibold"
+          onClick={handleClearFavorites}
+        >
+          Clear List
+        </button>
+      )}
       <div className="w-full flex items-center justify-start">
         <h2 className="text-2xl text-gray-600 mx-auto py-5 lg:text-3xl font-semibold">
           Favorites

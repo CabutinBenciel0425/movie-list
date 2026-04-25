@@ -138,7 +138,7 @@ function Searchbar() {
         />
 
         {resultsOpen && inputValue.trim().length > 0 && (
-          <div className="absolute bg-border-main w-full rounded-2xl px-3 py-2">
+          <div className="absolute bg-border-main w-full rounded-2xl px-3 py-2 z-99">
             {loading && (
               <p className="text-sm text-gray-400 p-2">Searching...</p>
             )}

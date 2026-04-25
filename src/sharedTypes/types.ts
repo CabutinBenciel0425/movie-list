@@ -2,6 +2,14 @@ import type React from "react";
 
 export type AppView = "search" | "movie" | "none" | "error";
 
+type ConfirmModalPayload = {
+  title?: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm: () => void;
+};
+
 export type FavoritesActionTypes =
   | { type: "ADD_FAVORITE"; payload: GetMovieType }
   | { type: "REMOVE_FAVORITE"; payload: number }
@@ -21,6 +29,19 @@ export type AppContextType = {
 
   favorites: GetMovieType[];
   dispatchFavorites: React.Dispatch<FavoritesActionTypes>;
+
+  confirmModal: {
+    isOpen: boolean;
+    title: string;
+    message: string;
+    confirmText: string;
+    cancelText: string;
+    onConfirm: () => void;
+  };
+
+  openConfirmModal: (params: ConfirmModalPayload) => void;
+
+  closeConfirmModal: () => void;
 };
 
 export type MovieType = {

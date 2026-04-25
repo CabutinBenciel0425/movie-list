@@ -17,6 +17,9 @@ export function useAppContext() {
     setSelectedMovie,
     favorites,
     dispatchFavorites,
+    confirmModal,
+    openConfirmModal,
+    closeConfirmModal,
   } = context;
 
   function addFavorite(movie: GetMovieType) {
@@ -51,5 +54,8 @@ export function useAppContext() {
     addFavorite,
     removeFavorite,
     clearFavorite,
+    confirmModal,
+    openConfirmModal,
+    closeConfirmModal,
   };
 }
